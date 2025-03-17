@@ -74,4 +74,3 @@ Return a JSON evaluation with a **strict explanation** for the assigned score:
 }}
 </output>
 """
-
