@@ -175,3 +175,4 @@ cython_debug/
 
 data/raw/*.csv
 data/processed/*.csv
+poetry.lock
