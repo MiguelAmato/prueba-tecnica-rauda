@@ -1,76 +1,77 @@
 FORMAT_PROMPT = """
 <context>
-You are an expert in evaluating AI-generated customer support responses. Your task is to **assess the response format only**, based on the provided customer support ticket. It means, that you only have to
-evaluate the clarity, structure of the reply and the grammar and spelling, NOT the content of the solution.
+You are an expert in evaluating AI-generated customer support responses. Your task is to **strictly assess the response format only**, based on the provided customer support ticket. This means you should 
+evaluate only the **clarity, structure, and grammar/spelling** of the reply, **NOT** the content or correctness of the information.
 </context>
 
 <criteria> 
-Evaluate the AI-generated reply strictly in terms of **format**, considering the following aspects:  
-- **Clarity**: Is the response easy to read and understand?  
-- **Structure**: Is the response well-organized, with a logical flow?  
-- **Grammar/Spelling**: Is the response free from grammatical errors and typos?
+Assess the AI-generated reply with the following **strict** formatting rules:
+- **Clarity**: The response should be **immediately understandable** by a general audience. If the sentence structure is convoluted, unclear, or overly complex, reduce the score.  
+- **Structure**: The response should be **logically organized**. If ideas are **not presented in a logical order**, or if the structure makes it **hard to follow**, lower the score.  
+- **Grammar/Spelling**: The response must be **completely free of spelling mistakes** and use **proper sentence structure and punctuation**. Any noticeable grammar issues should significantly lower the score.  
 </criteria>
 
 <scoring>
-Assign **one overall score** from **1 to 5**, following this scale:  
-- **1 = Poor**: The response is unclear, poorly structured, and contains multiple grammatical errors.  
-- **2 = Weak**: The response is somewhat understandable but has noticeable structural or grammatical issues.  
-- **3 = Average**: The response is generally clear but could be better structured or has minor errors.  
-- **4 = Good**: The response is well-structured, clear, and free of grammar/spelling mistakes ans even though it doesn't have errors it could be written better.  
-- **5 = Excellent**: The response is perfectly structured, highly readable, and free from any errors.  
+Assign **one overall score** from **1 to 5**, using these stricter standards:
+- **1 = Unacceptable**: The response is **poorly structured, unclear, and has multiple grammatical mistakes**, making it difficult to read.  
+- **2 = Below Average**: The response is **somewhat understandable** but has **noticeable formatting issues**, poor sentence structure, or multiple minor grammar errors.  
+- **3 = Acceptable**: The response is **clear enough**, but **could be significantly improved** in terms of structure, clarity, or grammar.  
+- **4 = Good**: The response is **well-structured and readable**, with only **minor** grammar issues, but **still could be improved** in its flow or clarity.  
+- **5 = Excellent**: The response is **perfectly structured, easy to read, free of errors**, and presents ideas in an **exceptionally clear** and **professional** manner.  
 
-If the response is **completely unreadable or highly unstructured**, assign a **score of 1** and explain why.  
+If the response **is unstructured, overly complex, or contains even minor readability issues**, **do not give a 5**.  
 </scoring>
 
 <input> 
-    The ticket that you have to evaluate: {ticket}
-    And the reply that you have to evaluate reply": {reply}
+    **Ticket:** {ticket}  
+    **Reply:** {reply}  
 </input> 
 
 <output>
+Return a JSON evaluation with **strict justification** for the assigned score:
 {{
-    "score": 5,
-    "explanation": "The response is well-structured, easy to read, and free of any grammatical or spelling mistakes."
+    "score": 4,
+    "explanation": "The response is structured well, but certain sentences could be clearer. While it has no grammar mistakes, it could improve in readability."
 }}
 </output>
 """
+
 
 CONTENT_PROMPT = """
 <context>
-You are an expert in evaluating AI-generated customer support responses. Your task is to **assess the response**
-based on **content quality only**, using the provided customer support ticket. It means, that you only have to
-evaluate the relevance, correctness and completeness of the content, NOT the format of the solution.
+You are an expert in evaluating AI-generated customer support responses. Your task is to **strictly assess the response based on content quality only**, using the provided customer support ticket.
+You must evaluate **relevance, correctness, and completeness**, **NOT** the format, grammar, or structure of the response.
 </context>
 
 <criteria>
-Evaluate the AI-generated reply holistically, considering the following factors:  
-- **Relevance**: Does the response directly address the customer's request?  
-- **Correctness**: Is the information factually accurate?  
-- **Completeness**: Does the response provide all necessary details to fully answer the ticket?  
+Assess the AI-generated reply with the following **strict** rules:
+- **Relevance**: The response **must directly address** the user’s request. If it includes unnecessary or off-topic information, **reduce the score**.  
+- **Correctness**: The information provided **must be 100% factually accurate**. If the response includes **any** misleading or partially incorrect information, **lower the score significantly**.  
+- **Completeness**: The response should **fully resolve** the customer's query. If the answer is **too brief** or **lacks key details** that a reasonable customer would expect, **lower the score**.  
 </criteria>
 
 <scoring>
-Assign **one overall score** from **1 to 5**, following this scale:  
-- **1 = Poor**: The response is incorrect, off-topic, or missing critical details.  
-- **2 = Weak**: The response is somewhat related but contains inaccuracies or lacks important details.  
-- **3 = Average**: The response is partially correct but lacks clarity or completeness.  
-- **4 = Good**: The response is correct, relevant, and sufficiently detailed but could be improved.  
-- **5 = Excellent**: The response is fully correct, relevant, and complete, requiring no improvements.  
+Assign **one overall score** from **1 to 5**, following these **stricter** standards:
+- **1 = Unacceptable**: The response is **factually incorrect, off-topic, or missing essential information**, making it **completely unhelpful**.  
+- **2 = Weak**: The response **partially** addresses the ticket but **lacks necessary information or contains errors**.  
+- **3 = Average**: The response is **mostly correct** but **lacks depth** or **does not fully resolve** the user’s issue.  
+- **4 = Good**: The response is **correct and mostly complete**, but **could be improved by adding more details or anticipating user follow-ups**.  
+- **5 = Excellent**: The response **fully answers the customer’s question**, is **comprehensive, highly accurate, and anticipates potential follow-ups**.  
 
-If the response is **completely irrelevant or incorrect**, assign a **score of 1** and explain why.  
+If the response **lacks depth**, **does not fully address the question**, or **omits key details**, **do not give a 5**.  
 </scoring>
 
 <input> 
-    The ticket that you have to evaluate: {ticket}
-    And the reply that you have to evaluate reply": {reply}
+    **Ticket:** {ticket}  
+    **Reply:** {reply}  
 </input> 
 
 <output>
-Return a structured evaluation in JSON format, following this schema:
+Return a JSON evaluation with a **strict explanation** for the assigned score:
 {{
-    "score": 5,
-    "explanation": "The response fully answers the customer's question with correct and complete information."
+    "score": 3,
+    "explanation": "The response is mostly correct, but it lacks key details regarding refund processing times, which a customer would likely expect."
 }}
 </output>
-
 """
+
