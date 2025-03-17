@@ -15,15 +15,15 @@ CSV_EVALUATED_FILE = os.getenv("CSV_EVALUATED_FILE")
 ERROR_RESPONSE = { "content_score" : None, "content_explanation" : None, "format_score" : None, "format_explanation" : None }
 
 def safe_llm_call(agent: Agent, ticket: str, reply: str) -> dict:
-	"""_summary_
+	"""Safely calls the LLM agent to evaluate a customer support response.
 
 	Args:
-		agent (Agent): _description_
-		ticket (str): _description_
-		reply (str): _description_
+		agent (Agent): The LLM agent responsible for evaluating the response.
+		ticket (str): The customer support ticket message.
+		reply (str): The AI-generated response to be evaluated.
 
 	Returns:
-		dict: _description_
+		dict: A dictionary containing the evaluation results from the agent, or `ERROR_RESPONSE` in case of failure.
 	"""
 	if (ticket is None) or (reply is None):
 		return ERROR_RESPONSE

@@ -20,7 +20,7 @@ class Agent:
         model:str="gpt-4o-mini",
         temperature:float=0.3,
     ):
-        """Calls the OpenAI API .
+        """Calls the OpenAI API.
 
         Args:
             prompt (str): The given prompt.
@@ -58,14 +58,24 @@ class Agent:
         ) 
         
     def evaluate_response(self, ticket:str, reply:str) -> dict:
-        """_summary_
+        """Evaluates an AI-generated customer support response based on content and format.
+
+        This method calls the LLM twice: once to evaluate the **content** of the response (relevance, correctness, completeness) 
+        and once to evaluate the **format** (clarity, structure, grammar/spelling). It returns a dictionary containing 
+        both evaluation scores and explanations.
 
         Args:
-            ticket (str): _description_
-            reply (str): _description_
+            ticket (str): The customer support message submitted by the user.
+            reply (str): The AI-generated response that needs evaluation.
 
         Returns:
-            dict: _description_
+            dict: A dictionary containing the evaluation results with the following keys:
+                - "content_score" (int | None): Score (1-5) for the quality of the response's content.
+                - "content_explanation" (str | None): Explanation of the content evaluation.
+                - "format_score" (int | None): Score (1-5) for the response's formatting quality.
+                - "format_explanation" (str | None): Explanation of the format evaluation.
+
+        If the LLM evaluation fails or does not return a valid response, the corresponding values will be set to `None`.
         """
         
         content_response = self.call_llm(
