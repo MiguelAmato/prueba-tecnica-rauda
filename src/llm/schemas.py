@@ -1,9 +1,13 @@
 from pydantic import BaseModel
 
+class ContentSchema(BaseModel):
+    """Content schema for the LLM call."""
+    
+    score: int
+    explanation: str
+
 class FormatSchema(BaseModel):
     """Format schema for the LLM call."""
-    
-    content_score: int
-    content_explanation: str
-    format_score: int
-    format_explanation: str
+
+    score: int
+    explanation: str
