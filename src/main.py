@@ -35,15 +35,19 @@ def safe_llm_call(agent: Agent, ticket: str, reply: str) -> dict:
 		return ERROR_RESPONSE
 
 def main():
+    # Read the csv file
     df = pd.read_csv(os.path.join(RAW_PATH, CSV_FILE))
     
+    # Add the new columns 
     df["content_score"] = None
     df["content_explanation"] = None
     df["format_score"] = None
     df["format_explanation"] = None
     
+    # Create the LLM Agent
     agent = Agent()
     
+    # Iterate in the df and calls in every row to the llm to fill the new columns
     for ind, row in df.iterrows():
         response = safe_llm_call(
             agent=agent,
@@ -57,9 +61,11 @@ def main():
 			response["format_explanation"]
 		]
         
-    
+    # Save the new df in a csv
     processed_file_path = os.path.join(PROCESSED_PATH, CSV_EVALUATED_FILE)
     df.to_csv(processed_file_path, index=False)
+    
+    print(f"Evaluated {CSV_FILE} saved in {CSV_EVALUATED_FILE}!")
     return
 
 if __name__ == "__main__":
