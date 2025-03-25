@@ -74,3 +74,27 @@ Return a JSON evaluation with a **strict explanation** for the assigned score:
 }}
 </output>
 """
+
+POLITENESS_PROMPT = """
+<context>
+You are an expert in evaluating AI-generated customer support responses. Your task is to **strictly assess the response based on politeness**, using the provided customer support ticket.
+</context>
+
+
+<scoring>
+Assign **one overall score** from **1 to 5**, following these **stricter** standards:
+- **1 = Unpolite**.  
+- **2 = Weak**.  
+- **3 = Average**.  
+- **4 = Good**.  
+- **5 = Excellent**.  
+
+</scoring>
+
+<input> 
+    **Ticket:** {ticket}  
+    **Reply:** {reply}  
+</input> 
+
+
+"""

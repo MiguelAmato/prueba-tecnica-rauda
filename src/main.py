@@ -17,6 +17,8 @@ ERROR_RESPONSE = {
     "content_explanation": None,
     "format_score": None,
     "format_explanation": None,
+    "politeness_score": None,
+    "politeness_explanation": None,
 }
 
 
@@ -50,6 +52,9 @@ def main():
     df["content_explanation"] = None
     df["format_score"] = None
     df["format_explanation"] = None
+    df["politeness_score"] = None
+    df["politeness_explanation"] = None
+    df["mind"] = None
 
     # Create the LLM Agent
     agent = Agent()
@@ -68,12 +73,18 @@ def main():
                 "content_explanation",
                 "format_score",
                 "format_explanation",
+                "politeness_score",
+                "politeness_explanation",
+                "mind",
             ],
         ] = [
             response["content_score"],
             response["content_explanation"],
             response["format_score"],
             response["format_explanation"],
+            response["politeness_score"],
+            response["politeness_explanation"],
+            (response["content_score"] + response["format_score"] + response["politeness_score"]) / 3
         ]
 
     # Save the new df in a csv

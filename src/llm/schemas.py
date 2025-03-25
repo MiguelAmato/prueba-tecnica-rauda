@@ -13,3 +13,9 @@ class FormatSchema(BaseModel):
 
     score: int
     explanation: str
+    
+class PolitenessSchema(BaseModel):
+    """Format schema for the LLM call."""
+
+    score: int
+    explanation: str

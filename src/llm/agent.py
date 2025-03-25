@@ -3,8 +3,8 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 
-from llm.prompts import CONTENT_PROMPT, FORMAT_PROMPT
-from llm.schemas import ContentSchema, FormatSchema
+from llm.prompts import CONTENT_PROMPT, FORMAT_PROMPT, POLITENESS_PROMPT
+from llm.schemas import ContentSchema, FormatSchema, PolitenessSchema
 
 
 class Agent:
@@ -86,6 +86,11 @@ class Agent:
             prompt=FORMAT_PROMPT.format(ticket=ticket, reply=reply),
             response_format=FormatSchema,
         )
+        
+        politeness_response = self.call_llm(
+            prompt=POLITENESS_PROMPT.format(ticket=ticket, reply=reply),
+            response_format=PolitenessSchema,
+        )
 
         return {
             "content_score": content_response.score if content_response.score else None,
@@ -95,5 +100,9 @@ class Agent:
             "format_score": format_response.score if format_response.score else None,
             "format_explanation": (
                 format_response.explanation if format_response.explanation else None
+            ),
+            "politeness_score": politeness_response.score if politeness_response.score else None,
+            "politeness_explanation": (
+                politeness_response.explanation if politeness_response.explanation else None
             ),
         }
